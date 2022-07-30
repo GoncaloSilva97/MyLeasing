@@ -1,0 +1,9 @@
+﻿namespace MyLeasing.Common.Data.Entities
+{
+    public interface IEntity
+    {
+        int Id { get; set; }    
+
+
+    }
+}
