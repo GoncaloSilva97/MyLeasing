@@ -1,10 +1,11 @@
 ﻿
+using MyLeasing.Common.Data;
 using MyLeasing.Common.Data.Entities;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SuperShopGS.Data
+namespace MyLeasing.Data
 {
     public class SeedDb
     {

@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SuperShopGS.Data;
+using MyLeasing.Common.Data;
+using MyLeasing.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace MyLeasing.Web
             });
 
             services.AddTransient<SeedDb>();
-
+            services.AddScoped<IRepository, Repository>();
 
 
 

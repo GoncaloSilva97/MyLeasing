@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MyLeasing.Common.Data.Entities;
 
-namespace SuperShopGS.Data
+namespace MyLeasing.Common.Data
 {
     public class DataContext : DbContext
     {
