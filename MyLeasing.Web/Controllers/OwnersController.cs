@@ -107,7 +107,7 @@ namespace MyLeasing.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Owner owner, User user)
+        public async Task<IActionResult> Edit(int id, Owner owner)
         {
             if (id != owner.Id)
             {
@@ -118,18 +118,32 @@ namespace MyLeasing.Web.Controllers
             {
                 try
                 {
-                    //TODO: Modificar para o user que esta logado
-                    user = await _userHelper.GetUserByEmailAsync(owner.FirstName + "." + owner.LastName + "@gmail.com");
-                    owner.User = await _userHelper.GetUserByEmailAsync(owner.FirstName + "." + owner.LastName + "@gmail.com");
+                    //var user = owner.User;
+                    //await _userHelper.DeletAsync(user);
+
+
+                    var user = new User
+                    {
+                        Document = owner.Document.ToString(),
+                        FirstName = owner.FirstName,
+                        LastName = owner.LastName,
+                        Address = owner.Address,
+                        Email = owner.FirstName + "." + owner.LastName + "@gmail.com",
+                        UserName = owner.FirstName + "." + owner.LastName + "@gmail.com",
+                        PhoneNumber = owner.FixPhone.ToString()
+                    };
+
+                    await _userHelper.AddUserAsync(user, "123456");
+
+                    owner.User = user;
                     await _ownerRepository.UpdateAsync(owner);
 
 
-                    
 
-                    await _userHelper.UpdateUserAsync(user);
-                  
+                    //TODO: Modificar para o user que esta logado
 
-                    //TODO:???????
+
+                    //TODO:Cria um novo user atualizado mas n apaga o antrior ideal era atualizar o o user mas n descobri como
                 }
                 catch (DbUpdateConcurrencyException)
                 {
