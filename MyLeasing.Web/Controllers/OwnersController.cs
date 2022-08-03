@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Common.Data;
 using MyLeasing.Common.Data.Entities;
+using MyLeasing.Common.Helperes;
 using MyLeasing.Data;
 
 namespace MyLeasing.Web.Controllers
@@ -14,16 +15,20 @@ namespace MyLeasing.Web.Controllers
     public class OwnersController : Controller
     {
         private readonly IOwnerRepository _ownerRepository;
+        private readonly IUserHelper _userHelper;
 
-        public OwnersController(IOwnerRepository ownerRepository)
+        public OwnersController(
+            IOwnerRepository ownerRepository,
+            IUserHelper userHelper)
         {
             _ownerRepository = ownerRepository;
+            _userHelper = userHelper;
         }
 
         // GET: Owners
         public IActionResult Index()
         {
-            return View(_ownerRepository.GetAll());
+            return View(_ownerRepository.GetAll().OrderBy(p => p.FirstName));
         }
 
         // GET: Owners/Details/5
@@ -58,6 +63,23 @@ namespace MyLeasing.Web.Controllers
         {
             if (ModelState.IsValid)
             {
+                //TODO: Modificar para o user que esta logado
+              
+                var user = new User
+                {
+                    Document = owner.Document.ToString(),
+                    FirstName = owner.FirstName,
+                    LastName = owner.LastName,
+                    Address = owner.Address,
+                    Email = owner.FirstName + "." + owner.LastName + "@gmail.com",
+                    UserName = owner.FirstName + "." + owner.LastName + "@gmail.com",
+                    PhoneNumber = owner.FixPhone.ToString()
+                };
+
+                await _userHelper.AddUserAsync(user, "123456");
+
+                owner.User = user;
+
                 await _ownerRepository.CreateAsync(owner); 
                 return RedirectToAction(nameof(Index));
             }
@@ -85,7 +107,7 @@ namespace MyLeasing.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Owner owner)
+        public async Task<IActionResult> Edit(int id, Owner owner, User user)
         {
             if (id != owner.Id)
             {
@@ -96,7 +118,18 @@ namespace MyLeasing.Web.Controllers
             {
                 try
                 {
+                    //TODO: Modificar para o user que esta logado
+                    user = await _userHelper.GetUserByEmailAsync(owner.FirstName + "." + owner.LastName + "@gmail.com");
+                    owner.User = await _userHelper.GetUserByEmailAsync(owner.FirstName + "." + owner.LastName + "@gmail.com");
                     await _ownerRepository.UpdateAsync(owner);
+
+
+                    
+
+                    await _userHelper.UpdateUserAsync(user);
+                  
+
+                    //TODO:???????
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -134,10 +167,19 @@ namespace MyLeasing.Web.Controllers
         // POST: Owners/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, User user)
         {
             var owner = await _ownerRepository.GetByIdAsync(id);
             await _ownerRepository.DeletAsync(owner);
+            
+            //TODO:???????
+
+
+            user = await _userHelper.GetUserByEmailAsync($"{owner.FirstName}.{owner.LastName}@gmail.com");
+            await _userHelper.DeletAsync(user);
+            
+
+
             return RedirectToAction(nameof(Index));
         }
 
