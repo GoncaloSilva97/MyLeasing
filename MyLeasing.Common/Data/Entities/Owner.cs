@@ -32,7 +32,8 @@ namespace MyLeasing.Common.Data.Entities
         public string FullName => $"{FirstName} {LastName}";
 
 
-
+        [Display(Name = "Image")]
+        public string ImageUrl { get; set; }
 
         [Display(Name = "Fixed Phone")]
         public double FixPhone { get; set; }
@@ -48,6 +49,30 @@ namespace MyLeasing.Common.Data.Entities
 
 
         public User User { get; set; }
+
+
+
         
+
+
+
+        public string ImageFullPath
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(ImageUrl))
+                {
+                    return null;
+                }
+
+                return $"https://localhost:44392{ImageUrl.Substring(1)}";
+            }
+        }
+
+
+
+
+
+
     }
 }

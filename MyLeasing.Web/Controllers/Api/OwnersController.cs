@@ -21,7 +21,7 @@ namespace MyLeasing.Web.Controllers.Api
         [HttpGet]
         public IActionResult GetOwner()
         {
-            return Ok(_ownerRepository.GetAll());
+            return Ok(_ownerRepository.GetAllWithUsers());
         }
 
 

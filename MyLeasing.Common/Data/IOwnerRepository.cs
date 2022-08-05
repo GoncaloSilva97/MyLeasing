@@ -8,6 +8,6 @@ namespace MyLeasing.Common.Data
 {
     public interface IOwnerRepository : IGenericRepository<Owner>
     {
-      
+        public IQueryable GetAllWithUsers();
     }
 }

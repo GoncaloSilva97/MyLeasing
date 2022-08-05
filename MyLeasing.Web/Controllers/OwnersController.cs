@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using MyLeasing.Common.Data;
 using MyLeasing.Common.Data.Entities;
 using MyLeasing.Common.Helperes;
 using MyLeasing.Data;
+using MyLeasing.Web.Models;
 
 namespace MyLeasing.Web.Controllers
 {
@@ -59,12 +61,36 @@ namespace MyLeasing.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Owner owner)
+        public async Task<IActionResult> Create(OwnerViewModel model)
         {
             if (ModelState.IsValid)
             {
+                var path = string.Empty;
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
+                {
+                    var guid = Guid.NewGuid().ToString();
+                    var file = $"{guid}.jpg";
+
+                    path = Path.Combine(
+                        Directory.GetCurrentDirectory(),
+                        "wwwroot\\image\\owner",
+                        file);
+
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await model.ImageFile.CopyToAsync(stream);
+                    }
+
+                    path = $"~/image/owner/{file}";
+                }
+
+                var owner = this.ToOwner(model, path);
+
+
+
+
                 //TODO: Modificar para o user que esta logado
-              
+
                 var user = new User
                 {
                     Document = owner.Document.ToString(),
@@ -83,8 +109,54 @@ namespace MyLeasing.Web.Controllers
                 await _ownerRepository.CreateAsync(owner); 
                 return RedirectToAction(nameof(Index));
             }
-            return View(owner);
+            return View(model);
         }
+
+
+
+
+        private Owner ToOwner (OwnerViewModel model, string path)
+        {
+            return new Owner
+            {
+                Id = model.Id,
+                ImageUrl = path,
+                FirstName = model.FirstName,
+                LastName= model.LastName,
+                FixPhone = model.FixPhone,
+                CellPhone = model.CellPhone,
+                Address = model.Address,
+                Document = model.Document,
+                User = model.User
+            };
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // GET: Owners/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -99,7 +171,25 @@ namespace MyLeasing.Web.Controllers
             {
                 return NotFound();
             }
-            return View(owner);
+            var model = this.ToOwnerViewModel(owner);
+            return View(model);
+        }
+
+        private OwnerViewModel ToOwnerViewModel(Owner owner)
+        {
+            return new OwnerViewModel
+            {
+                Id = owner.Id,
+                ImageUrl = owner.ImageUrl,
+                FirstName = owner.FirstName,
+                LastName = owner.LastName,
+                FixPhone = owner.FixPhone,
+                CellPhone = owner.CellPhone,
+                Address = owner.Address,
+                Document = owner.Document,
+                User = owner.User
+
+            };
         }
 
         // POST: Owners/Edit/5
@@ -107,19 +197,33 @@ namespace MyLeasing.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Owner owner)
+        public async Task<IActionResult> Edit(OwnerViewModel model)
         {
-            if (id != owner.Id)
-            {
-                return NotFound();
-            }
-
             if (ModelState.IsValid)
-            {
+            {    
                 try
                 {
-                    //var user = owner.User;
-                    //await _userHelper.DeletAsync(user);
+                    var path = model.ImageUrl;
+                    if (model.ImageFile != null && model.ImageFile.Length > 0)
+                    {
+                        var guid = Guid.NewGuid().ToString();
+                        var file = $"{guid}.jpg";
+
+                        path = Path.Combine(
+                            Directory.GetCurrentDirectory(),
+                            "wwwroot\\image\\owner",
+                            file);
+
+                        using (var stream = new FileStream(path, FileMode.Create))
+                        {
+                            await model.ImageFile.CopyToAsync(stream);
+                        }
+                        path = $"~/image/owner/{file}";
+                    }
+                    var owner = this.ToOwner(model, path);
+
+
+                   
 
 
                     var user = new User
@@ -135,19 +239,20 @@ namespace MyLeasing.Web.Controllers
 
                     await _userHelper.AddUserAsync(user, "123456");
 
-                    owner.User = user;
+                    owner.User = await _userHelper.GetUserByEmailAsync($"{owner.FirstName}.{owner.LastName}@gmail.com"); 
                     await _ownerRepository.UpdateAsync(owner);
 
 
 
+                   
                     //TODO: Modificar para o user que esta logado
 
 
-                    //TODO:Cria um novo user atualizado mas n apaga o antrior ideal era atualizar o o user mas n descobri como
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (! await _ownerRepository.ExistAsync(owner.Id))
+                    if (! await _ownerRepository.ExistAsync(model.Id))
                     {
                         return NotFound();
                     }
@@ -158,8 +263,40 @@ namespace MyLeasing.Web.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(owner);
+            return View(model);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // GET: Owners/Delete/5
         public async Task<IActionResult> Delete(int? id)
