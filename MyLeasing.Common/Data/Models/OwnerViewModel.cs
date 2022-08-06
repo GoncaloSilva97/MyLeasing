@@ -2,7 +2,7 @@
 using MyLeasing.Common.Data.Entities;
 using System.ComponentModel.DataAnnotations;
 
-namespace MyLeasing.Web.Models
+namespace MyLeasing.Common.Models
 {
     public class OwnerViewModel : Owner
     {
