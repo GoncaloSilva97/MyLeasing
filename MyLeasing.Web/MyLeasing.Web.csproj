@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\image\lessee\" />
     <Folder Include="wwwroot\image\owner\" />
   </ItemGroup>
 

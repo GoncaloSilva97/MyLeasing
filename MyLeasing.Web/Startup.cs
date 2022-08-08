@@ -68,6 +68,9 @@ namespace MyLeasing.Web
 
             services.AddScoped<IOwnerRepository, OwnerRepository>();
 
+            services.AddScoped<ILesseeRepository, LesseeRepository>();
+
+
 
 
             services.AddControllersWithViews();

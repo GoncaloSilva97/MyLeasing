@@ -65,6 +65,21 @@ namespace MyLeasing.Data
                
                 await _context.SaveChangesAsync();
             }
+
+
+            if (!_context.Lessee.Any())
+            {
+                AddLessee("Ruy", "Charls", "Rua Kapa Nº33, 1C");
+                AddLessee("Simon", "Nothing", "Rua da Gama Nº1, 4A");
+                AddLessee("Andrew", "Pyke", "Rua Never Nº1, 6E");
+                AddLessee("Tomy", "Mouse", "Rua Da Alemanha Nº245, 1C");
+                AddLessee("Sofya", "Cast", "Rua Da Caixa Nº5, 3P");
+
+
+                await _context.SaveChangesAsync();
+            }
+
+
         }
 
         private void AddOwner(string Fname, string Lname, string Add)
@@ -85,6 +100,36 @@ namespace MyLeasing.Data
             _userHelper.AddUserAsync(user, "123456");
 
             _context.Owners.Add(new Owner
+            {
+                Document = ran,
+                FirstName = Fname,
+                LastName = Lname,
+                FixPhone = _random.Next(100000000),
+                Address = Add,
+                CellPhone = _random.Next(100000000),
+                User = user
+            });
+        }
+
+
+        private void AddLessee(string Fname, string Lname, string Add)
+        {
+            string ran = _random.Next(100000).ToString();
+            var user = new User
+            {
+                Document = ran.ToString(),
+                FirstName = Fname,
+                LastName = Lname,
+                Address = Add,
+                Email = Fname + "." + Lname + "@gmail.com",
+                UserName = Fname + "." + Lname + "@gmail.com",
+                NormalizedEmail = Fname + "." + Lname + "@gmail.com",
+                PhoneNumber = _random.Next(100000000).ToString()
+            };
+
+            _userHelper.AddUserAsync(user, "123456");
+
+            _context.Lessee.Add(new Lessee
             {
                 Document = ran,
                 FirstName = Fname,

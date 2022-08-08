@@ -1,4 +1,4 @@
-﻿@model MyLeasing.Common.Models.OwnerViewModel
+﻿@model MyLeasing.Common.Models.LesseeViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -6,7 +6,7 @@
 
 <h1>Create</h1>
 
-<h4>Owner</h4>
+<h4>Lessee</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -28,6 +28,11 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" class="form-control" type="file"/>
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="FixPhone" class="control-label"></label>
                 <input asp-for="FixPhone" class="form-control" />
                 <span asp-validation-for="FixPhone" class="text-danger"></span>
@@ -42,17 +47,6 @@
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-
-
-            <div class="form-group">
-                <label asp-for="ImageFile" class="control-label"></label>
-                <input asp-for="ImageFile" class="form-control" type="file"/>
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
-            </div>
-
-
-
-
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

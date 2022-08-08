@@ -11,5 +11,10 @@ namespace MyLeasing.Common.Data
         {
 
         }
+
+
+        public DbSet<Lessee> Lessee { get; set; }
+        
+       
     }
 }
