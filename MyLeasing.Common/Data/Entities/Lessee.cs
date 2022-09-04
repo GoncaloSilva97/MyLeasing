@@ -32,8 +32,26 @@ namespace MyLeasing.Common.Data.Entities
         public string FullName => $"{FirstName} {LastName}";
 
 
+
+
+
+
+
         [Display(Name = "Photo")]
-        public string PhotoUrl { get; set; }
+        public Guid PhotoId { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         [Display(Name = "Fixed Phone")]
         public double FixPhone { get; set; }
@@ -53,21 +71,13 @@ namespace MyLeasing.Common.Data.Entities
         public User User { get; set; }
 
 
-        public string ImageFullPath
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(PhotoUrl))
-                {
-                    return null;
-                }
-
-                return $"https://localhost:44392{PhotoUrl.Substring(1)}";
-            }
-        }
+        public string PhotoFullPath => PhotoId == Guid.Empty
+            ? $"https://myleasinggs.azurewebsites.net/image/lessee/noimage.png"
+            : $"https://myleasinggs.blob.core.windows.net/lessees/{PhotoId}";
 
 
 
+       
 
 
 

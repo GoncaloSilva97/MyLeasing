@@ -19,9 +19,4 @@
     <ProjectReference Include="..\MyLeasing.Common\MyLeasing.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\image\lessee\" />
-    <Folder Include="wwwroot\image\owner\" />
-  </ItemGroup>
-
 </Project>

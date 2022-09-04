@@ -54,10 +54,8 @@
 
 
         <div class="col-md-4">
-                    @if (!string.IsNullOrEmpty(Model.PhotoUrl))
-                    {
-                        <img src="@Url.Content(Model.PhotoUrl)" alt="Image" style="width:300px;height:450px;max-width:100%;height:auto">
-                    }
+                 
+                        <img src="@Url.Content(Model.PhotoFullPath)" alt="Image" style="width:300px;height:450px;max-width:100%;height:auto">
         </div>
 
 

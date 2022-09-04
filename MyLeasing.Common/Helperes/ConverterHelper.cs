@@ -2,17 +2,18 @@
 
 using MyLeasing.Common.Data.Entities;
 using MyLeasing.Common.Models;
+using System;
 
 namespace MyLeasing.Common.Helperes
 {
     public class ConverterHelper : IConverterHelper
     {
-        public Lessee ToLessee(LesseeViewModel model, string path, bool isNew)
+        public Lessee ToLessee(LesseeViewModel model, Guid photoId, bool isNew)
         {
             return new Lessee
             {
                 Id = isNew ? 0 : model.Id,
-                PhotoUrl = path,
+                PhotoId = photoId,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 FixPhone = model.FixPhone,
@@ -28,7 +29,7 @@ namespace MyLeasing.Common.Helperes
             return new LesseeViewModel
             {
                 Id = lessee.Id,
-                PhotoUrl = lessee.PhotoUrl,
+                PhotoId = lessee.PhotoId,
                 FirstName = lessee.FirstName,
                 LastName = lessee.LastName,
                 FixPhone = lessee.FixPhone,
@@ -44,12 +45,12 @@ namespace MyLeasing.Common.Helperes
 
 
 
-        public Owner ToOwner(OwnerViewModel model, string path, bool isNew)
+        public Owner ToOwner(OwnerViewModel model, Guid imageId, bool isNew)
         {
             return new Owner
             {
                 Id = isNew ? 0 : model.Id,
-                ImageUrl = path,
+                ImageId = imageId,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 FixPhone = model.FixPhone,
@@ -65,7 +66,7 @@ namespace MyLeasing.Common.Helperes
             return new OwnerViewModel
             {
                 Id = owner.Id,
-                ImageUrl = owner.ImageUrl,
+                ImageId = owner.ImageId,
                 FirstName = owner.FirstName,
                 LastName = owner.LastName,
                 FixPhone = owner.FixPhone,
