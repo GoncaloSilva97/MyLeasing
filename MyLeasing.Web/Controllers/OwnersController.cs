@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -58,6 +59,7 @@ namespace MyLeasing.Web.Controllers
         }
 
         // GET: Owners/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -110,6 +112,7 @@ namespace MyLeasing.Web.Controllers
 
 
         // GET: Owners/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -162,7 +165,7 @@ namespace MyLeasing.Web.Controllers
 
                     await _userHelper.AddUserAsync(user, "123456");
 
-                    owner.User = await _userHelper.GetUserByEmailAsync($"{owner.FirstName}.{owner.LastName}@gmail.com"); 
+                    owner.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name); 
                     await _ownerRepository.UpdateAsync(owner);
 
 
@@ -222,6 +225,7 @@ namespace MyLeasing.Web.Controllers
 
 
         // GET: Owners/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -249,7 +253,7 @@ namespace MyLeasing.Web.Controllers
             //TODO:???????
 
 
-            user = await _userHelper.GetUserByEmailAsync($"{owner.FirstName}.{owner.LastName}@gmail.com");
+            user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
             await _userHelper.DeletAsync(user);
             
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,7 @@ namespace MyLeasing.Web.Controllers
         }
 
         // GET: Lessees/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -65,6 +67,7 @@ namespace MyLeasing.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Create(LesseeViewModel model)
         {
             if (ModelState.IsValid)
@@ -112,6 +115,7 @@ namespace MyLeasing.Web.Controllers
         }
 
         // GET: Lessees/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -163,7 +167,7 @@ namespace MyLeasing.Web.Controllers
 
                     await _userHelper.AddUserAsync(user, "123456");
 
-                    lessee.User = await _userHelper.GetUserByEmailAsync($"{lessee.FirstName}.{lessee.LastName}@gmail.com");
+                    lessee.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
 
 
 
@@ -188,6 +192,7 @@ namespace MyLeasing.Web.Controllers
         }
 
         // GET: Lessees/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -217,7 +222,7 @@ namespace MyLeasing.Web.Controllers
 
 
 
-            user = await _userHelper.GetUserByEmailAsync($"{lessee.FirstName}.{lessee.LastName}@gmail.com");
+            user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
             await _userHelper.DeletAsync(user);
 
 
