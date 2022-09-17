@@ -84,7 +84,11 @@ namespace SuperShopGS.Controllers
                         FirstName = model.FirstName,
                         LastName = model.LastName,
                         Email = model.Username,
-                        UserName = model.Username
+                        UserName = model.Username,
+                        PhoneNumber = model.PhoneNumber,
+                        Document = model.Document,
+                        Address = model.Address
+                        
                     };
 
                     var result = await _userHelper.AddUserAsync(user, model.Password);
