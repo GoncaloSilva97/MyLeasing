@@ -13,6 +13,7 @@ using MyLeasing.Common.Models;
 
 namespace MyLeasing.Web.Controllers
 {
+    
     public class LesseesController : Controller
     { 
         private readonly ILesseeRepository _lesseeRepository;
@@ -43,20 +44,20 @@ namespace MyLeasing.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                //return new NotFoundViewResult("LesseeNotFound");
             }
 
             var lessee = await _lesseeRepository.GetByIdAsync(id.Value);
             if (lessee == null)
             {
-                return NotFound();
+                //return new NotFoundViewResult("LesseeNotFound");
             }
 
             return View(lessee);
         }
 
         // GET: Lessees/Create
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -120,13 +121,13 @@ namespace MyLeasing.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                //return new NotFoundViewResult("LesseeNotFound");
             }
 
             var lessee = await _lesseeRepository.GetByIdAsync(id.Value);
             if (lessee == null)
             {
-                return NotFound();
+                //return new NotFoundViewResult("LesseeNotFound");
             }
             var model = _converterHelper.ToLesseeViewModel(lessee);
             return View(model);
@@ -197,14 +198,14 @@ namespace MyLeasing.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                //return new NotFoundViewResult("LesseeNotFound");
             }
 
             var lessee = await _lesseeRepository.GetByIdAsync(id.Value);
 
             if (lessee == null)
             {
-                return NotFound();
+                //return new NotFoundViewResult("LesseeNotFound");
             }
 
             return View(lessee);
@@ -234,5 +235,15 @@ namespace MyLeasing.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
+
+
+
+
+        public IActionResult LesseeNotFound()
+        {
+            return View();
+        }
     }
 }

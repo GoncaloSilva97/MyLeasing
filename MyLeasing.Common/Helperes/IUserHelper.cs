@@ -33,5 +33,19 @@ namespace MyLeasing.Common.Helperes
 
         Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword);
 
+
+
+
+
+
+
+
+
+
+        Task CheckRoleAsync(string roleName);
+
+        Task AddUserToRoleAsync(User user, string roleName);
+
+        Task<bool> IsUserInRoleAsync(User user, string roleName);
     }
 }

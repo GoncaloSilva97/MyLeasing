@@ -38,11 +38,52 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Contact</a>
                         </li>    
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Owners" asp-action="Index">Owners</a>
+                            <a class="nav-link text-dark" hidden="hidden" asp-area="" asp-controller="Owners" asp-action="Index">Owners</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Lessees" asp-action="Index">Lessee</a>
+                            <a class="nav-link text-dark" hidden="hidden" asp-area="" asp-controller="Lessees" asp-action="Index">Lessee</a>
                         </li>
+                        @if(this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
+						{
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
+								<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+									
+
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Owners" asp-action="Index">Owners</a></li>
+                                    
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Lessees" asp-action="Index">Lessees</a></li>
+
+								</ul>
+							</li>
+						}
+
+
+                        @if(this.User.Identity.IsAuthenticated && this.User.IsInRole("Owner"))
+						{
+							<li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Owners" asp-action="Index">Owners</a>
+                            </li>
+						}
+
+                        @if(this.User.Identity.IsAuthenticated && this.User.IsInRole("Lessee"))
+						{
+							<li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Lessees" asp-action="Index">Lessees</a>
+                            </li>
+						}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                     </ul>

@@ -196,5 +196,13 @@ namespace SuperShopGS.Controllers
         }
 
 
+
+
+
+        public IActionResult NotAuthorized()
+        {
+            return View();
+        }
+
     }
 }

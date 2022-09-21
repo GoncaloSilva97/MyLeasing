@@ -16,6 +16,7 @@ using MyLeasing.Web.Models;
 
 namespace MyLeasing.Web.Controllers
 {
+    
     public class OwnersController : Controller
     {
         private readonly IOwnerRepository _ownerRepository;
@@ -46,20 +47,20 @@ namespace MyLeasing.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                //return new NotFoundViewResult("OwnerNotFound");
             }
 
             var owner = await _ownerRepository.GetByIdAsync(id.Value);
             if (owner == null)
             {
-                return NotFound();
+                //return new NotFoundViewResult("OwnerNotFound");
             }
 
             return View(owner);
         }
 
         // GET: Owners/Create
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -117,13 +118,13 @@ namespace MyLeasing.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                //return new NotFoundViewResult("OwnerNotFound");
             }
 
             var owner = await _ownerRepository.GetByIdAsync(id.Value); 
             if (owner == null)
             {
-                return NotFound();
+                //return new NotFoundViewResult("OwnerNotFound");
             }
             var model = _converterHelper.ToOwnerViewModel(owner);
             return View(model);
@@ -230,13 +231,13 @@ namespace MyLeasing.Web.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                //return new NotFoundViewResult("OwnerNotFound");
             }
 
             var owner = await _ownerRepository.GetByIdAsync(id.Value);
             if (owner == null)
             {
-                return NotFound();
+                //return new NotFoundViewResult("OwnerNotFound");
             }
 
             return View(owner);
@@ -261,5 +262,18 @@ namespace MyLeasing.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
+
+
+
+
+
+
+
+        public IActionResult OwnerNotFound()
+        {
+            return View();
+        }
     }
 }
